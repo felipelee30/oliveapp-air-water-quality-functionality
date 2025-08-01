@@ -1,0 +1,26 @@
+meta {
+  name: Error Cases - Out of Range Coordinates
+  type: http
+  seq: 7
+}
+
+get {
+  url: {{baseUrl}}/api/environmental-quality?lat=91&lng=181
+  body: none
+  auth: none
+}
+
+params:query {
+  lat: 91
+  lng: 181
+}
+
+tests {
+  test("should return 400 for out of range coordinates", function() {
+    expect(res.getStatus()).to.equal(400);
+    
+    const error = res.getBody();
+    expect(error).to.have.property("error");
+    // Should catch the validation error from Coordinates value object
+  });
+}

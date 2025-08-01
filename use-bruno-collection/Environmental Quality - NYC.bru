@@ -1,0 +1,59 @@
+meta {
+  name: Environmental Quality - NYC
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/api/environmental-quality?lat=40.7128&lng=-74.0060
+  body: none
+  auth: none
+}
+
+params:query {
+  lat: 40.7128
+  lng: -74.0060
+}
+
+tests {
+  test("should return valid response structure", function() {
+    const data = res.getBody();
+    
+    // Check main structure
+    expect(data).to.have.property("coordinates");
+    expect(data).to.have.property("airQuality");
+    expect(data).to.have.property("waterQuality");
+    expect(data).to.have.property("overallHealth");
+    expect(data).to.have.property("timestamp");
+  });
+
+  test("should have valid coordinates", function() {
+    const data = res.getBody();
+    expect(data.coordinates.latitude).to.equal(40.7128);
+    expect(data.coordinates.longitude).to.equal(-74.0060);
+  });
+
+  test("should have valid air quality data", function() {
+    const data = res.getBody();
+    const airQuality = data.airQuality;
+    
+    expect(airQuality).to.have.property("score");
+    expect(airQuality).to.have.property("rating");
+    expect(airQuality).to.have.property("pollutants");
+    expect(airQuality.score).to.be.a("number");
+    expect(airQuality.score).to.be.at.least(0).and.at.most(100);
+    expect(airQuality.rating).to.be.oneOf(["Excellent", "Good", "Fair", "Poor", "Bad"]);
+  });
+
+  test("should have valid water quality data", function() {
+    const data = res.getBody();
+    const waterQuality = data.waterQuality;
+    
+    expect(waterQuality).to.have.property("score");
+    expect(waterQuality).to.have.property("rating");
+    expect(waterQuality).to.have.property("contaminants");
+    expect(waterQuality.score).to.be.a("number");
+    expect(waterQuality.score).to.be.at.least(0).and.at.most(100);
+    expect(waterQuality.rating).to.be.oneOf(["Excellent", "Good", "Fair", "Poor", "Bad"]);
+  });
+}

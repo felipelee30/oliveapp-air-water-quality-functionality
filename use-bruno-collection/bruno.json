@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "oliveapp-air-water-quality-functionality",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}

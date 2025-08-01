@@ -1,0 +1,29 @@
+meta {
+  name: Environmental Quality - London
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseUrl}}/api/environmental-quality?lat=51.5074&lng=-0.1278
+  body: none
+  auth: none
+}
+
+params:query {
+  lat: 51.5074
+  lng: -0.1278
+}
+
+tests {
+  test("should handle international coordinates", function() {
+    if (res.getStatus() === 200) {
+      const data = res.getBody();
+      expect(data.coordinates.latitude).to.equal(51.5074);
+      expect(data.coordinates.longitude).to.equal(-0.1278);
+    } else {
+      // International locations might not have EPA water data
+      expect(res.getStatus()).to.be.oneOf([400, 500]);
+    }
+  });
+}

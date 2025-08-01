@@ -1,0 +1,32 @@
+meta {
+  name: Environmental Quality - LA
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/api/environmental-quality?lat=34.0522&lng=-118.2437
+  body: none
+  auth: none
+}
+
+params:query {
+  lat: 34.0522
+  lng: -118.2437
+}
+
+tests {
+  test("should return 200 or handle errors gracefully", function() {
+    if (res.getStatus() === 200) {
+      const data = res.getBody();
+      expect(data).to.have.property("coordinates");
+      expect(data.coordinates.latitude).to.equal(34.0522);
+      expect(data.coordinates.longitude).to.equal(-118.2437);
+    } else {
+      // Should return proper error structure
+      expect(res.getStatus()).to.be.oneOf([400, 500]);
+      const error = res.getBody();
+      expect(error).to.have.property("error");
+    }
+  });
+}
