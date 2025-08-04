@@ -1,12 +1,12 @@
-import React from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
-import { BlurView } from 'expo-blur';
-import Animated, { 
-  useAnimatedStyle, 
+import React from "react";
+import { View, Text, TouchableOpacity } from "react-native";
+import { BlurView } from "expo-blur";
+import Animated, {
+  useAnimatedStyle,
   withSpring,
   useSharedValue,
-  withTiming
-} from 'react-native-reanimated';
+  withTiming,
+} from "react-native-reanimated";
 
 export interface Location {
   name: string;
@@ -21,7 +21,8 @@ interface LocationSelectorProps {
   onLocationChange: (location: Location) => void;
 }
 
-const AnimatedTouchableOpacity = Animated.createAnimatedComponent(TouchableOpacity);
+const AnimatedTouchableOpacity =
+  Animated.createAnimatedComponent(TouchableOpacity);
 
 export const LocationSelector: React.FC<LocationSelectorProps> = ({
   locations,
@@ -30,7 +31,7 @@ export const LocationSelector: React.FC<LocationSelectorProps> = ({
 }) => {
   return (
     <View className="absolute top-0 left-0 right-0 pt-12 px-4 z-10">
-      <BlurView 
+      <BlurView
         intensity={80}
         tint="light"
         className="rounded-2xl overflow-hidden"
@@ -94,10 +95,20 @@ const LocationButton: React.FC<LocationButtonProps> = ({
       style={animatedStyle}
       className="flex-1 mx-1"
     >
-      <View className={`${isSelected ? 'bg-glass-white-40' : 'bg-glass-white-20'} rounded-xl p-3 border ${isSelected ? 'border-glass-white-30' : 'border-glass-border'}`}>
-        <View className="items-center">
+      <View
+        className={`${
+          isSelected ? "bg-glass-white-40" : "bg-glass-white-20"
+        } rounded-xl p-3 flex-1 border ${
+          isSelected ? "border-glass-white-30" : "border-glass-border"
+        }`}
+      >
+        <View className="flex flex-col justify-center items-center">
           <Text className="text-2xl mb-1">{location.emoji}</Text>
-          <Text className={`${isSelected ? 'text-gray-900 font-semibold' : 'text-gray-700'} text-xs`}>
+          <Text
+            className={`${
+              isSelected ? "text-gray-900 font-semibold" : "text-gray-700"
+            } text-xs text-center`}
+          >
             {location.name}
           </Text>
         </View>

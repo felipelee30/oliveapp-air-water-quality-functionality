@@ -1,19 +1,19 @@
-import React, { useState } from 'react';
-import { View, Dimensions, TouchableOpacity } from 'react-native';
-import Animated, { 
-  useSharedValue, 
-  useAnimatedStyle, 
+import React, { useState } from "react";
+import { View, Dimensions, TouchableOpacity } from "react-native";
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
   withSpring,
   withTiming,
   runOnJS,
   interpolate,
-  Extrapolate
-} from 'react-native-reanimated';
-import { CollapsedView } from './CollapsedView';
-import { ExpandedView } from './ExpandedView';
-import { LoadingView } from './LoadingView';
-import { ErrorView } from './ErrorView';
-import { useEnvironmentalQuality } from '../hooks/useEnvironmentalQuality';
+  Extrapolate,
+} from "react-native-reanimated";
+import { CollapsedView } from "./CollapsedView";
+import { ExpandedView } from "./ExpandedView";
+import { LoadingView } from "./LoadingView";
+import { ErrorView } from "./ErrorView";
+import { useEnvironmentalQuality } from "../hooks/useEnvironmentalQuality";
 
 interface EnvironmentalQualityOverlayProps {
   latitude?: number;
@@ -21,16 +21,17 @@ interface EnvironmentalQualityOverlayProps {
   onExpandedChange?: (expanded: boolean) => void;
 }
 
-const { height: screenHeight } = Dimensions.get('window');
+const { height: screenHeight } = Dimensions.get("window");
 const COLLAPSED_HEIGHT = 120;
 
-export const EnvironmentalQualityOverlay: React.FC<EnvironmentalQualityOverlayProps> = ({
-  latitude,
-  longitude,
-  onExpandedChange,
-}) => {
+export const EnvironmentalQualityOverlay: React.FC<
+  EnvironmentalQualityOverlayProps
+> = ({ latitude, longitude, onExpandedChange }) => {
   const [isExpanded, setIsExpanded] = useState(false);
-  const { data, loading, error, refetch } = useEnvironmentalQuality(latitude, longitude);
+  const { data, loading, error, refetch } = useEnvironmentalQuality(
+    latitude,
+    longitude
+  );
 
   // Animation values
   const animationProgress = useSharedValue(0); // 0 = collapsed, 1 = expanded
@@ -49,7 +50,7 @@ export const EnvironmentalQualityOverlay: React.FC<EnvironmentalQualityOverlayPr
     // First update local state immediately
     setIsExpanded(false);
     onExpandedChange?.(false);
-    
+
     // Then start animation
     animationProgress.value = withSpring(0, {
       damping: 20,
@@ -99,7 +100,6 @@ export const EnvironmentalQualityOverlay: React.FC<EnvironmentalQualityOverlayPr
     };
   });
 
-
   // Content opacity animations
   const collapsedContentStyle = useAnimatedStyle(() => {
     const opacity = interpolate(
@@ -134,35 +134,40 @@ export const EnvironmentalQualityOverlay: React.FC<EnvironmentalQualityOverlayPr
       <Animated.View
         style={[
           {
-            position: 'absolute',
+            position: "absolute",
             bottom: 0,
             left: 0,
             right: 0,
-            shadowColor: '#000',
+            shadowColor: "#000",
             shadowOffset: { width: 0, height: -2 },
             shadowOpacity: 0.15,
             shadowRadius: 10,
             elevation: 8,
           },
-          containerStyle
+          containerStyle,
         ]}
       >
         {loading && (
-          <View className="h-[120px] justify-center items-center bg-glass-white-10 border border-glass-border rounded-3xl">
+          <View className="h-[120px] justify-center items-center bg-glass-white-10 rounded-3xl">
             <LoadingView />
           </View>
         )}
-        
+
         {error && (
-          <View className="h-[120px] justify-center items-center p-4 bg-glass-white-10 border border-glass-border rounded-3xl">
+          <View className="h-[120px] justify-center items-center p-4 bg-glass-white-10 rounded-3xl">
             <ErrorView error={error} onRetry={refetch} />
           </View>
         )}
-        
+
         {data && !loading && !error && (
           <>
             {/* Collapsed Content */}
-            <Animated.View style={[{ position: 'absolute', top: 0, left: 0, right: 0 }, collapsedContentStyle]}>
+            <Animated.View
+              style={[
+                { position: "absolute", bottom: 0, left: 0, right: 0 },
+                collapsedContentStyle,
+              ]}
+            >
               <CollapsedView data={data} onExpand={handleExpand} />
             </Animated.View>
 

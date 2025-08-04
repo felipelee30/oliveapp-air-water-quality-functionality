@@ -1,14 +1,14 @@
-import React from 'react';
-import { View, Text, ActivityIndicator } from 'react-native';
-import { BlurView } from 'expo-blur';
+import React from "react";
+import { View, Text, ActivityIndicator } from "react-native";
+import { BlurView } from "expo-blur";
 
 export const LoadingView: React.FC = () => {
   return (
-    <View className="mx-4 mb-8">
-      <BlurView 
+    <View className="h-full w-full">
+      <BlurView
         intensity={50}
         tint="light"
-        className="bg-glass-white rounded-2xl border border-glass-border overflow-hidden"
+        className="h-full w-full flex justify-center items-center rounded-3xl border border-glass-border overflow-hidden"
       >
         <View className="p-6 items-center">
           <ActivityIndicator size="small" color="black" />
