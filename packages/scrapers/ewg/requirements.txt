@@ -1,0 +1,11 @@
+aiohttp
+beautifulsoup4
+lxml
+pandas
+pyarrow
+rich
+asyncio-throttle
+requests
+tqdm
+tenacity
+python-dotenv
